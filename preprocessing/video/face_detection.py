@@ -68,14 +68,19 @@ class FaceDetector:
 
         x, y, bw, bh = best_face["bbox"]
 
-        # 🔥 IMPORTANT FIX: MORE PADDING FOR 224 MODEL
-        padding_x = int(0.35 * bw)
-        padding_y = int(0.45 * bh)
+        padding_x = int(0.25 * bw)
+        padding_y = int(0.35 * bh)
 
         x1 = max(0, x - padding_x)
         y1 = max(0, y - padding_y)
         x2 = min(w, x + bw + padding_x)
         y2 = min(h, y + bh + padding_y)
+
+        if x2 - x1 < 64 or y2 - y1 < 64:
+            x1 = max(0, x - max(32, int(0.5 * bw)))
+            y1 = max(0, y - max(32, int(0.5 * bh)))
+            x2 = min(w, x + bw + max(32, int(0.5 * bw)))
+            y2 = min(h, y + bh + max(32, int(0.5 * bh)))
 
         face_crop = frame[y1:y2, x1:x2]
 

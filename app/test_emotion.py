@@ -1,13 +1,21 @@
+import os
+
+import cv2
+
 from input_stream.video_stream import VideoStream
 from preprocessing.video.face_detection import FaceDetector
 from models.emotion_detector import EmotionDetector
-import cv2
 
 
 def main():
     vs = VideoStream().start()
     detector = FaceDetector()
-    emotion_model = EmotionDetector()
+
+    model_path = "models/best_emotion_model.pth"
+    if not os.path.exists(model_path):
+        model_path = "models/emotion_classifier.onnx"
+
+    emotion_model = EmotionDetector(model_path=model_path)
 
     frame_count = 0
 
@@ -61,7 +69,7 @@ def main():
             )
 
         # 🔥 MAIN WINDOW
-        cv2.imshow("Emotion Detection (EfficientNet ONNX)", frame)
+        cv2.imshow("Emotion Detection (ConvNeXt / GPU)", frame)
 
         # 🔥 EXIT
         if cv2.waitKey(1) & 0xFF in (ord('q'), 27):
