@@ -1,13 +1,5 @@
+google-genai>=2.10.0
+python-dotenv
+sounddevice
 numpy
-pandas
-matplotlib
-seaborn
-scikit-learn
-opencv-python
-pillow
-torch
-torchvision
-torchaudio
-transformers
-librosa
-streamlit
+websockets>=12.0
